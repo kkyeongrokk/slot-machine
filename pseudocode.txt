@@ -1,0 +1,14 @@
+define all the pictures in slotmachine.
+init function will randomly initialize the starting img, startingMoney, and render
+render function will let the user know how much money is left, render new img, update high score, 
+
+const values: bettingMoneyPerSpin($15, $25, $50, $100), images in machine
+state variables: startingMoney, highScore, startingPictures, moneyLeft
+eventListeners: bettingMoneyPerSpin, addMoney, Spin
+init function: initiate startingMoney = 0, highScore = 0, startingPictures
+
+handleClickMoney will add money to account, handleClickSpin will spin and get new imgs, handleClickBetMoney will select how much per spin the user wants to bet
+If the moneyLeft is larger than high score, update the high score
+If the moneyLeft is smaller than bettingMoneyPerSpin, can't spin
+
+winning logic: same three picture you'll earn money. Depends on the picture
