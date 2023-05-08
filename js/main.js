@@ -10,7 +10,6 @@ const REELIMGS_LOOKUP = [
 /*----- state variables -----*/
 let accMoney;
 let betPerSpin;
-let reelImg;
 let highScore;
 
 /*----- cached elements  -----*/
@@ -65,6 +64,7 @@ function handleAddMoney() {
 }
 
 function renderReel() {
+  // guard to not spin when the user have not enough money
   if (accMoney < betPerSpin) {
     console.log("Not enough money to spin!");
     return;
@@ -78,12 +78,28 @@ function renderReel() {
   }
 }
 
-//return positive number if win money, else return negative number
-// function winOrLoseMoney() {}
+function countIdenticalReelImgs() {
+  let count = 0;
+  const reelImgs = document.querySelectorAll(".reel");
+  if (reelImgs[0] === reelImgs[1] && reelImgs[1] === reelImgs[2]) {
+    return 2;
+  } else if (
+    reelImgs[0] === reelImgs[1] ||
+    reelImgs[1] === reelImgs[2] ||
+    reelImgs[0] === reelImgs[2]
+  ) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
 
-// function renderAccount() {
-//   accMoney += winOrLoseMoney();
-// }
+// return positive number if win money, else return negative number
+function winOrLoseMoney() {}
+
+function renderAccount() {
+  accMoney += winOrLoseMoney();
+}
 
 // function setHighScore() {
 //   highScore = winOrLoseMoney() > highScore ? winOrLoseMoney : highScore;
@@ -91,6 +107,6 @@ function renderReel() {
 
 function render() {
   renderReel();
-  // renderAccount();
+  renderAccount();
   // setHighScore();
 }
