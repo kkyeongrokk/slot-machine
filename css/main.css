@@ -71,10 +71,24 @@ main {
   border-radius: 15px;
 }
 
-#spin-btn {
+#bet-money div:first-child {
+  width: 50%;
+}
+
+#bet-money div:last-child {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#add-money {
+  width: 5vmin;
+}
+
+.buttons {
   border: 0.5vmin solid black;
   border-radius: 10px;
   margin-top: 2vmin;
   height: 8vmin;
-  width: 8vmin;
+  width: fit-content;
 }

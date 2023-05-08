@@ -17,6 +17,9 @@ let highScore;
 
 /*----- event listeners -----*/
 document.getElementById("spin-btn").addEventListener("click", render);
+document
+  .getElementById("add-money-btn")
+  .addEventListener("click", handleAddMoney);
 /*----- functions -----*/
 init();
 
@@ -26,6 +29,10 @@ function init() {
   highScore = 0;
 
   render();
+}
+
+function handleAddMoney() {
+  accMoney += parseInt(document.getElementById("add-money").value);
 }
 
 function renderReel() {
