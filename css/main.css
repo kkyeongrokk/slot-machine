@@ -49,6 +49,10 @@ main {
   text-align: center; /* remove later */
 }
 
+.reel img {
+  width: 100%;
+}
+
 #touch-screen {
   padding: 2vmin;
   width: 100%;
