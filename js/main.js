@@ -55,7 +55,7 @@ function handleBetPerSpin(evt) {
 }
 
 function handleWithdraw() {
-  console.log(`Withdrawing ${accMoney}`);
+  console.log(`Withdrawing $${accMoney}`);
   accMoney = 0;
 }
 
@@ -66,7 +66,6 @@ function handleAddMoney() {
 function renderReel() {
   // guard to not spin when the user have not enough money
   if (accMoney < betPerSpin) {
-    console.log("Not enough money to spin!");
     return;
   }
 
@@ -82,15 +81,18 @@ function renderReel() {
 }
 
 function countIdenticalReelImgs() {
-  const reelImgs = document.querySelectorAll(".reel img");
+  let reelImgs = document.querySelectorAll(".reel img");
 
-  if (reelImgs[0] === reelImgs[1] && reelImgs[1] === reelImgs[2]) {
+  if (
+    reelImgs[0].src === reelImgs[1].src &&
+    reelImgs[1].src === reelImgs[2].src
+  ) {
     return { 3: reelImgs[0].src };
-  } else if (reelImgs[0] === reelImgs[1]) {
+  } else if (reelImgs[0].src === reelImgs[1].src) {
     return { 2: reelImgs[0].src };
-  } else if (reelImgs[0] === reelImgs[2]) {
+  } else if (reelImgs[0].src === reelImgs[2].src) {
     return { 2: reelImgs[0].src };
-  } else if (reelImgs[1] === reelImgs[2]) {
+  } else if (reelImgs[1].src === reelImgs[2].src) {
     return { 2: reelImgs[1].src };
   } else {
     return { 1: reelImgs[0].src };
@@ -99,11 +101,9 @@ function countIdenticalReelImgs() {
 
 function winOrLoseMoney(res) {
   let countOfIdenticalImgs = Object.keys(res)[0];
-  console.log(countOfIdenticalImgs);
   let img = res[countOfIdenticalImgs];
-  console.log(img);
 
-  if (countOfIdenticalImgs === 1) return;
+  if (countOfIdenticalImgs === 1) return 0;
 
   switch (true) {
     case img.includes(REELIMGS_LOOKUP[0]):
@@ -124,18 +124,25 @@ function winOrLoseMoney(res) {
 }
 
 function renderAccount() {
+  if (accMoney < betPerSpin) {
+    console.log("Not enough money to spin!");
+    return;
+  }
   console.log(`won $${winOrLoseMoney(countIdenticalReelImgs())}`);
   accMoney += winOrLoseMoney(countIdenticalReelImgs());
   console.log(`$${accMoney} left in your account!`);
 }
 
-// function setHighScore() {
-//   highScore = winOrLoseMoney() > highScore ? winOrLoseMoney : highScore;
-//   document.getElementById("high-score").innerText = `HIGH SCORE: $${highScore}`;
-// }
+function setHighScore() {
+  highScore =
+    winOrLoseMoney(countIdenticalReelImgs()) > highScore
+      ? winOrLoseMoney(countIdenticalReelImgs())
+      : highScore;
+  document.getElementById("high-score").innerText = `HIGH SCORE: $${highScore}`;
+}
 
 function render() {
   renderReel();
   renderAccount();
-  // setHighScore();
+  setHighScore();
 }
