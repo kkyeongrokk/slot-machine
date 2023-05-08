@@ -20,6 +20,10 @@ document.getElementById("spin-btn").addEventListener("click", render);
 document
   .getElementById("add-money-btn")
   .addEventListener("click", handleAddMoney);
+document
+  .getElementById("withdraw-btn")
+  .addEventListener("click", handleWithdraw);
+
 /*----- functions -----*/
 init();
 
@@ -29,6 +33,11 @@ function init() {
   highScore = 0;
 
   render();
+}
+
+function handleWithdraw() {
+  console.log(`Withdrawing ${accMoney}`);
+  accMoney = 0;
 }
 
 function handleAddMoney() {
