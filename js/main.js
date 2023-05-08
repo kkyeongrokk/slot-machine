@@ -38,6 +38,14 @@ function init() {
   betPerSpin = 15;
   highScore = 0;
 
+  for (let i = 0; i < 3; i++) {
+    let randomReelImg =
+      REELIMGS_LOOKUP[Math.floor(Math.random() * REELIMGS_LOOKUP.length)];
+    document.querySelector(
+      `.reel:nth-child(${i + 1})`
+    ).innerHTML = `<img src="${randomReelImg}" >`;
+  }
+
   render();
 }
 
@@ -57,6 +65,10 @@ function handleAddMoney() {
 }
 
 function renderReel() {
+  if (accMoney < betPerSpin) {
+    console.log("Not enough money to spin!");
+    return;
+  }
   for (let i = 0; i < 3; i++) {
     let randomReelImg =
       REELIMGS_LOOKUP[Math.floor(Math.random() * REELIMGS_LOOKUP.length)];
@@ -66,7 +78,19 @@ function renderReel() {
   }
 }
 
+//return positive number if win money, else return negative number
+// function winOrLoseMoney() {}
+
+// function renderAccount() {
+//   accMoney += winOrLoseMoney();
+// }
+
+// function setHighScore() {
+//   highScore = winOrLoseMoney() > highScore ? winOrLoseMoney : highScore;
+// }
+
 function render() {
   renderReel();
   // renderAccount();
+  // setHighScore();
 }
