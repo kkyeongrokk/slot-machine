@@ -13,12 +13,13 @@ let betPerSpin;
 let highScore;
 
 /*----- cached elements  -----*/
+const addMoneyEl = document.getElementById("add-money");
 const betMoneyEls = [
   ...document.querySelectorAll("#bet-money div:first-child > button"),
 ];
 
 /*----- event listeners -----*/
-document.getElementById("spin-btn").addEventListener("click", render);
+document.getElementById("spin-btn").addEventListener("click", renderReel);
 document
   .getElementById("add-money-btn")
   .addEventListener("click", handleAddMoney);
@@ -37,13 +38,7 @@ function init() {
   betPerSpin = 15;
   highScore = 0;
 
-  for (let i = 0; i < 3; i++) {
-    let randomReelImg =
-      REELIMGS_LOOKUP[Math.floor(Math.random() * REELIMGS_LOOKUP.length)];
-    document.querySelector(
-      `.reel:nth-child(${i + 1})`
-    ).innerHTML = `<img src="${randomReelImg}" >`;
-  }
+  randomPattern();
 
   render();
 }
@@ -60,17 +55,28 @@ function handleWithdraw() {
 }
 
 function handleAddMoney() {
-  accMoney += parseInt(document.getElementById("add-money").value);
+  if (addMoneyEl.value < 0) {
+    addMoneyEl.value = "";
+    return;
+  }
+  accMoney += parseInt(addMoneyEl.value);
+  addMoneyEl.value = "";
+  console.log(`$${accMoney} left in your account!`);
 }
 
 function renderReel() {
   // guard to not spin when the user have not enough money
-  if (accMoney < betPerSpin) {
-    return;
-  }
+  if (accMoney < betPerSpin) return;
+  if (accMoney === 0) return;
 
   accMoney -= betPerSpin;
 
+  randomPattern();
+
+  render();
+}
+
+function randomPattern() {
   for (let i = 0; i < 3; i++) {
     let randomReelImg =
       REELIMGS_LOOKUP[Math.floor(Math.random() * REELIMGS_LOOKUP.length)];
@@ -142,7 +148,6 @@ function setHighScore() {
 }
 
 function render() {
-  renderReel();
   renderAccount();
   setHighScore();
 }

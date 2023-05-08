@@ -55,10 +55,17 @@ main {
   width: 100%;
 }
 
-#touch-screen {
+#status-bar {
   padding: 2vmin;
+  margin-top: 2vmin;
   width: 100%;
-  margin-top: 5vmin;
+  border: 0.5vmin solid black;
+  border-radius: 10px;
+}
+
+#touch-screen {
+  width: 100%;
+  margin-top: 2vmin;
   display: flex;
   flex-direction: column;
   justify-content: center;
