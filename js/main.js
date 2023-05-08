@@ -69,6 +69,9 @@ function renderReel() {
     console.log("Not enough money to spin!");
     return;
   }
+
+  accMoney -= betPerSpin;
+
   for (let i = 0; i < 3; i++) {
     let randomReelImg =
       REELIMGS_LOOKUP[Math.floor(Math.random() * REELIMGS_LOOKUP.length)];
@@ -79,30 +82,56 @@ function renderReel() {
 }
 
 function countIdenticalReelImgs() {
-  let count = 0;
-  const reelImgs = document.querySelectorAll(".reel");
+  const reelImgs = document.querySelectorAll(".reel img");
+
   if (reelImgs[0] === reelImgs[1] && reelImgs[1] === reelImgs[2]) {
-    return 2;
-  } else if (
-    reelImgs[0] === reelImgs[1] ||
-    reelImgs[1] === reelImgs[2] ||
-    reelImgs[0] === reelImgs[2]
-  ) {
-    return 1;
+    return { 3: reelImgs[0].src };
+  } else if (reelImgs[0] === reelImgs[1]) {
+    return { 2: reelImgs[0].src };
+  } else if (reelImgs[0] === reelImgs[2]) {
+    return { 2: reelImgs[0].src };
+  } else if (reelImgs[1] === reelImgs[2]) {
+    return { 2: reelImgs[1].src };
   } else {
-    return 0;
+    return { 1: reelImgs[0].src };
   }
 }
 
-// return positive number if win money, else return negative number
-function winOrLoseMoney() {}
+function winOrLoseMoney(res) {
+  let countOfIdenticalImgs = Object.keys(res)[0];
+  console.log(countOfIdenticalImgs);
+  let img = res[countOfIdenticalImgs];
+  console.log(img);
+
+  if (countOfIdenticalImgs === 1) return;
+
+  switch (true) {
+    case img.includes(REELIMGS_LOOKUP[0]):
+      return countOfIdenticalImgs * betPerSpin;
+
+    case img.includes(REELIMGS_LOOKUP[1]):
+      return countOfIdenticalImgs * (betPerSpin / 10);
+
+    case img.includes(REELIMGS_LOOKUP[2]):
+      return countOfIdenticalImgs * (betPerSpin / 2);
+
+    case img.includes(REELIMGS_LOOKUP[3]):
+      return countOfIdenticalImgs * (betPerSpin / 15);
+
+    case img.includes(REELIMGS_LOOKUP[4]):
+      return countOfIdenticalImgs * (betPerSpin / 12);
+  }
+}
 
 function renderAccount() {
-  accMoney += winOrLoseMoney();
+  console.log(`won $${winOrLoseMoney(countIdenticalReelImgs())}`);
+  accMoney += winOrLoseMoney(countIdenticalReelImgs());
+  console.log(`$${accMoney} left in your account!`);
 }
 
 // function setHighScore() {
 //   highScore = winOrLoseMoney() > highScore ? winOrLoseMoney : highScore;
+//   document.getElementById("high-score").innerText = `HIGH SCORE: $${highScore}`;
 // }
 
 function render() {
