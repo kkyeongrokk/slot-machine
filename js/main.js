@@ -13,22 +13,20 @@ let betPerSpin;
 let highScore;
 
 /*----- cached elements  -----*/
+const spinBtn = document.getElementById("spin-btn");
+const addMoneyBtn = document.getElementById("add-money-btn");
+const withdrawBtn = document.getElementById("withdraw-btn");
+const betPerSpinEl = document.querySelector("#bet-money div:first-child");
 const addMoneyEl = document.getElementById("add-money");
 const betMoneyEls = [
   ...document.querySelectorAll("#bet-money div:first-child > button"),
 ];
 
 /*----- event listeners -----*/
-document.getElementById("spin-btn").addEventListener("click", renderReel);
-document
-  .getElementById("add-money-btn")
-  .addEventListener("click", handleAddMoney);
-document
-  .getElementById("withdraw-btn")
-  .addEventListener("click", handleWithdraw);
-document
-  .querySelector("#bet-money div:first-child")
-  .addEventListener("click", handleBetPerSpin);
+spinBtn.addEventListener("click", renderReel);
+addMoneyBtn.addEventListener("click", handleAddMoney);
+withdrawBtn.addEventListener("click", handleWithdraw);
+betPerSpinEl.addEventListener("click", handleBetPerSpin);
 
 /*----- functions -----*/
 init();
