@@ -46,7 +46,9 @@ main {
   width: 25%;
   border: 0.5vmin solid black;
   border-radius: 10%;
-  text-align: center; /* remove later */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .reel img {

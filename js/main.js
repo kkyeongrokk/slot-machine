@@ -14,6 +14,9 @@ let reelImg;
 let highScore;
 
 /*----- cached elements  -----*/
+const betMoneyEls = [
+  ...document.querySelectorAll("#bet-money div:first-child > button"),
+];
 
 /*----- event listeners -----*/
 document.getElementById("spin-btn").addEventListener("click", render);
@@ -23,6 +26,9 @@ document
 document
   .getElementById("withdraw-btn")
   .addEventListener("click", handleWithdraw);
+document
+  .querySelector("#bet-money div:first-child")
+  .addEventListener("click", handleBetPerSpin);
 
 /*----- functions -----*/
 init();
@@ -33,6 +39,12 @@ function init() {
   highScore = 0;
 
   render();
+}
+
+function handleBetPerSpin(evt) {
+  betPerSpin = parseInt(
+    evt.target.innerText.replace(evt.target.innerText[0], "")
+  );
 }
 
 function handleWithdraw() {
