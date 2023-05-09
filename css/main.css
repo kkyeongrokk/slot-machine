@@ -3,6 +3,7 @@
 }
 
 body {
+  background-color: goldenrod;
   height: 100vh;
   margin: 0;
   display: flex;
@@ -30,7 +31,7 @@ main {
 }
 
 #high-score {
-  border: 0.5vmin solid black;
+  /* border: 0.5vmin solid black; */
   border-radius: 10px;
   padding: 2vmin;
 }
@@ -83,13 +84,19 @@ main {
   background-color: gold;
   padding: 2vmin;
   display: flex;
+  align-items: center;
   width: 100%;
   /* border: 0.5vmin solid black; */
   border-radius: 15px;
 }
 
+#bet-money > div {
+}
+
 #bet-money div:first-child {
   width: 50%;
+  display: flex;
+  align-items: center;
 }
 
 #bet-money div:last-child {
@@ -101,6 +108,7 @@ main {
 #add-money {
   width: 7vmin;
   margin-right: 1vmin;
+  height: 3vmin;
 }
 
 #add-money-btn {
@@ -119,6 +127,12 @@ main {
   /* border: 0.5vmin solid black; */
   border-radius: 10px;
   margin-top: 2vmin;
-  height: 8vmin;
+  /* height: 8vmin; */
   width: fit-content;
+}
+
+.buttons:hover {
+  background-color: gold;
+  color: darkgrey;
+  cursor: pointer;
 }
