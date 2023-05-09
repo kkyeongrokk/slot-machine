@@ -1,5 +1,4 @@
 /*----- constants -----*/
-/*----- constants -----*/
 const PROBABILITY_LOOKUP = [
   "c",
   "c",
@@ -129,7 +128,7 @@ function countIdenticalReelImgs() {
   }
 }
 
-function winOrLoseMoney(res) {
+function winMoney(res) {
   let countOfIdenticalImgs = Object.keys(res)[0];
   let img = res[countOfIdenticalImgs];
 
@@ -176,15 +175,15 @@ function renderAccount() {
     console.log("Not enough money to spin!");
     return;
   }
-  wonMoneyEl.innerText = `won $${winOrLoseMoney(countIdenticalReelImgs())}`;
-  accMoney += winOrLoseMoney(countIdenticalReelImgs());
+  wonMoneyEl.innerText = `won $${winMoney(countIdenticalReelImgs())}`;
+  accMoney += winMoney(countIdenticalReelImgs());
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
 }
 
 function setHighScore() {
   highScore =
-    winOrLoseMoney(countIdenticalReelImgs()) > highScore
-      ? winOrLoseMoney(countIdenticalReelImgs())
+    winMoney(countIdenticalReelImgs()) > highScore
+      ? winMoney(countIdenticalReelImgs())
       : highScore;
   document.getElementById("high-score").innerText = `HIGH SCORE: $${highScore}`;
 }
