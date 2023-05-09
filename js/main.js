@@ -77,6 +77,8 @@ function handleWithdraw() {
 }
 
 function handleAddMoney() {
+  if (addMoneyEl.value === "") return;
+
   if (addMoneyEl.value < 0) {
     addMoneyEl.value = "";
     return;
