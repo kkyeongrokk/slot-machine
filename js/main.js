@@ -18,6 +18,8 @@ const addMoneyBtn = document.getElementById("add-money-btn");
 const withdrawBtn = document.getElementById("withdraw-btn");
 const betPerSpinEl = document.querySelector("#bet-money div:first-child");
 const addMoneyEl = document.getElementById("add-money");
+const moneyLeftEl = document.getElementById("money-left");
+const wonMoneyEl = document.getElementById("won-money");
 const betMoneyEls = [
   ...document.querySelectorAll("#bet-money div:first-child > button"),
 ];
@@ -48,8 +50,9 @@ function handleBetPerSpin(evt) {
 }
 
 function handleWithdraw() {
-  console.log(`Withdrawing $${accMoney}`);
+  moneyLeftEl.innerText = `Withdrawing $${accMoney}`;
   accMoney = 0;
+  // moneyLeftEl.innerText = `$${accMoney} left in your account!`;
 }
 
 function handleAddMoney() {
@@ -59,7 +62,7 @@ function handleAddMoney() {
   }
   accMoney += parseInt(addMoneyEl.value);
   addMoneyEl.value = "";
-  console.log(`$${accMoney} left in your account!`);
+  moneyLeftEl.innerText = `$${accMoney} left in your account!`;
 }
 
 function renderReel() {
@@ -68,7 +71,7 @@ function renderReel() {
   if (accMoney === 0) return;
 
   accMoney -= betPerSpin;
-
+  moneyLeftEl.innerText = `$${accMoney} left in your account!`;
   randomPattern();
 
   render();
@@ -111,19 +114,19 @@ function winOrLoseMoney(res) {
 
   switch (true) {
     case img.includes(REELIMGS_LOOKUP[0]):
-      return countOfIdenticalImgs * betPerSpin;
+      return Math.floor(countOfIdenticalImgs * betPerSpin);
 
     case img.includes(REELIMGS_LOOKUP[1]):
-      return countOfIdenticalImgs * (betPerSpin / 10);
+      return Math.floor(countOfIdenticalImgs * (betPerSpin / 10));
 
     case img.includes(REELIMGS_LOOKUP[2]):
-      return countOfIdenticalImgs * (betPerSpin / 2);
+      return Math.floor(countOfIdenticalImgs * (betPerSpin / 2));
 
     case img.includes(REELIMGS_LOOKUP[3]):
-      return countOfIdenticalImgs * (betPerSpin / 15);
+      return Math.floor(countOfIdenticalImgs * (betPerSpin / 15));
 
     case img.includes(REELIMGS_LOOKUP[4]):
-      return countOfIdenticalImgs * (betPerSpin / 12);
+      return Math.floor(countOfIdenticalImgs * (betPerSpin / 12));
   }
 }
 
@@ -132,9 +135,9 @@ function renderAccount() {
     console.log("Not enough money to spin!");
     return;
   }
-  console.log(`won $${winOrLoseMoney(countIdenticalReelImgs())}`);
+  wonMoneyEl.innerText = `won $${winOrLoseMoney(countIdenticalReelImgs())}`;
   accMoney += winOrLoseMoney(countIdenticalReelImgs());
-  console.log(`$${accMoney} left in your account!`);
+  moneyLeftEl.innerText = `$${accMoney} left in your account!`;
 }
 
 function setHighScore() {
