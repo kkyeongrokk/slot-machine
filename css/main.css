@@ -76,7 +76,6 @@ main {
   margin-top: 2vmin;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
 
@@ -84,13 +83,10 @@ main {
   background-color: gold;
   padding: 2vmin;
   display: flex;
-  align-items: center;
   width: 100%;
   /* border: 0.5vmin solid black; */
   border-radius: 15px;
-}
-
-#bet-money > div {
+  margin-bottom: 2vmin;
 }
 
 #bet-money div:first-child {
@@ -103,6 +99,7 @@ main {
   width: 50%;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
 
 #add-money {
@@ -126,7 +123,7 @@ main {
 .buttons {
   /* border: 0.5vmin solid black; */
   border-radius: 10px;
-  margin-top: 2vmin;
+  /* margin-top: 2vmin; */
   /* height: 8vmin; */
   width: fit-content;
 }
