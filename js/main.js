@@ -149,10 +149,8 @@ function countIdenticalReelImgs() {
 }
 
 function winMoney(res) {
-  let countOfIdenticalImgs = Object.keys(res)[0];
+  let countOfIdenticalImgs = parseInt(Object.keys(res)[0]);
   let img = res[countOfIdenticalImgs];
-  console.log(img);
-
   if (countOfIdenticalImgs === 1) return 0;
 
   switch (true) {
@@ -196,7 +194,9 @@ function renderAccount() {
     console.log("Not enough money to spin!");
     return;
   }
+  console.log(winMoney(countIdenticalReelImgs()));
   let moneyWon = winMoney(countIdenticalReelImgs());
+
   wonMoneyEl.innerText = `won $${moneyWon}`;
   accMoney += moneyWon;
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
