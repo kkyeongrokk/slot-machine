@@ -96,6 +96,7 @@ function handleSpin() {
   accMoney -= betPerSpin;
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
   randomPattern();
+  setHighScore();
 
   flashRandomSymbols(function () {
     render();
@@ -155,33 +156,33 @@ function winMoney(res) {
   if (countOfIdenticalImgs === 1) return 0;
 
   switch (true) {
-    case img === REELIMGS_LOOKUP["s"]:
+    case img === "s":
       return Math.floor(
         countOfIdenticalImgs * betPerSpin * REELIMGS_LOOKUP["s"].payoutFactor
       );
 
-    case img === REELIMGS_LOOKUP["c"]:
+    case img === "c":
       return Math.floor(
         countOfIdenticalImgs *
           (betPerSpin / 10) *
           REELIMGS_LOOKUP["c"].payoutFactor
       );
 
-    case img === REELIMGS_LOOKUP["g"]:
+    case img === "g":
       return Math.floor(
         countOfIdenticalImgs *
           (betPerSpin / 2) *
           REELIMGS_LOOKUP["g"].payoutFactor
       );
 
-    case img === REELIMGS_LOOKUP["d"]:
+    case img === "d":
       return Math.floor(
         countOfIdenticalImgs *
           (betPerSpin / 15) *
           REELIMGS_LOOKUP["d"].payoutFactor
       );
 
-    case img === REELIMGS_LOOKUP["w"]:
+    case img === "w":
       return Math.floor(
         countOfIdenticalImgs *
           (betPerSpin / 12) *
@@ -195,17 +196,16 @@ function renderAccount() {
     console.log("Not enough money to spin!");
     return;
   }
-  let winMoney = winMoney(countIdenticalReelImgs());
-  wonMoneyEl.innerText = `won $${winMoney}`;
-  accMoney += winMoney;
+  let moneyWon = winMoney(countIdenticalReelImgs());
+  wonMoneyEl.innerText = `won $${moneyWon}`;
+  accMoney += moneyWon;
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
 }
 
 function setHighScore() {
-  highScore =
-    winMoney(countIdenticalReelImgs()) > highScore
-      ? winMoney(countIdenticalReelImgs())
-      : highScore;
+  let moneyWon = winMoney(countIdenticalReelImgs());
+
+  highScore = moneyWon > highScore ? moneyWon : highScore;
   document.getElementById("high-score").innerText = `HIGH SCORE: $${highScore}`;
 }
 
@@ -219,5 +219,4 @@ function renderReels() {
 function render() {
   renderReels();
   renderAccount();
-  setHighScore();
 }
