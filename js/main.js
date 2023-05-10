@@ -150,37 +150,38 @@ function countIdenticalReelImgs() {
 function winMoney(res) {
   let countOfIdenticalImgs = Object.keys(res)[0];
   let img = res[countOfIdenticalImgs];
+  console.log(img);
 
   if (countOfIdenticalImgs === 1) return 0;
 
   switch (true) {
-    case img.includes(REELIMGS_LOOKUP["s"].img):
+    case img === REELIMGS_LOOKUP["s"]:
       return Math.floor(
         countOfIdenticalImgs * betPerSpin * REELIMGS_LOOKUP["s"].payoutFactor
       );
 
-    case img.includes(REELIMGS_LOOKUP["c"].img):
+    case img === REELIMGS_LOOKUP["c"]:
       return Math.floor(
         countOfIdenticalImgs *
           (betPerSpin / 10) *
           REELIMGS_LOOKUP["c"].payoutFactor
       );
 
-    case img.includes(REELIMGS_LOOKUP["g"].img):
+    case img === REELIMGS_LOOKUP["g"]:
       return Math.floor(
         countOfIdenticalImgs *
           (betPerSpin / 2) *
           REELIMGS_LOOKUP["g"].payoutFactor
       );
 
-    case img.includes(REELIMGS_LOOKUP["d"].img):
+    case img === REELIMGS_LOOKUP["d"]:
       return Math.floor(
         countOfIdenticalImgs *
           (betPerSpin / 15) *
           REELIMGS_LOOKUP["d"].payoutFactor
       );
 
-    case img.includes(REELIMGS_LOOKUP["w"].img):
+    case img === REELIMGS_LOOKUP["w"]:
       return Math.floor(
         countOfIdenticalImgs *
           (betPerSpin / 12) *
@@ -194,8 +195,9 @@ function renderAccount() {
     console.log("Not enough money to spin!");
     return;
   }
-  wonMoneyEl.innerText = `won $${winMoney(countIdenticalReelImgs())}`;
-  accMoney += winMoney(countIdenticalReelImgs());
+  let winMoney = winMoney(countIdenticalReelImgs());
+  wonMoneyEl.innerText = `won $${winMoney}`;
+  accMoney += winMoney;
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
 }
 
