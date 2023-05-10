@@ -92,6 +92,7 @@ function renderReel() {
   // guard to not spin when the user have not enough money
   if (accMoney < betPerSpin) return;
   if (accMoney === 0) {
+    moneyLeftEl.innerText = `$${accMoney} left in your account!`;
     return;
   }
 
