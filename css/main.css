@@ -4,7 +4,8 @@
 }
 
 body {
-  background-color: goldenrod;
+  background-image: url(https://i.pinimg.com/originals/b2/11/ec/b211ec9469d225420ecfe01b08268ec8.png);
+  background-size: cover;
   height: 100vh;
   margin: 0;
   display: flex;

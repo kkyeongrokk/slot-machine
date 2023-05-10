@@ -91,7 +91,9 @@ function handleAddMoney() {
 function renderReel() {
   // guard to not spin when the user have not enough money
   if (accMoney < betPerSpin) return;
-  if (accMoney === 0) return;
+  if (accMoney === 0) {
+    return;
+  }
 
   accMoney -= betPerSpin;
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
@@ -173,10 +175,7 @@ function winMoney(res) {
 }
 
 function renderAccount() {
-  if (accMoney < betPerSpin) {
-    console.log("Not enough money to spin!");
-    return;
-  }
+  if (accMoney < betPerSpin) return;
   wonMoneyEl.innerText = `won $${winMoney(countIdenticalReelImgs())}`;
   accMoney += winMoney(countIdenticalReelImgs());
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
