@@ -29,6 +29,10 @@ const REELIMGS_LOOKUP = {
   w: { img: "img/watermelon.png", payoutFactor: 15 },
 };
 
+const SOUNDS_LOOKUP = {
+  spin: "sound/mixkit-arcade-slot-machine-wheel-1933.wav",
+};
+
 /*----- state variables -----*/
 let accMoney;
 let betPerSpin;
@@ -36,6 +40,7 @@ let highScore;
 let reels;
 
 /*----- cached elements  -----*/
+const player = new Audio();
 const reelEls = document.querySelectorAll(".reel");
 const spinBtn = document.getElementById("spin-btn");
 const addMoneyBtn = document.getElementById("add-money-btn");
@@ -57,6 +62,11 @@ betPerSpinEl.addEventListener("click", handleBetPerSpin);
 /*----- functions -----*/
 init();
 
+function playSound(name) {
+  player.src = SOUNDS_LOOKUP[name];
+  player.play();
+}
+
 function init() {
   accMoney = 0;
   betPerSpin = 15;
@@ -64,29 +74,6 @@ function init() {
   reels = ["s", "s", "s"];
 
   render();
-}
-
-function handleBetPerSpin(evt) {
-  betPerSpin = parseInt(
-    evt.target.innerText.replace(evt.target.innerText[0], "")
-  );
-}
-
-function handleWithdraw() {
-  moneyLeftEl.innerText = `Withdrawing $${accMoney}`;
-  accMoney = 0;
-}
-
-function handleAddMoney() {
-  if (addMoneyEl.value === "") return;
-
-  if (addMoneyEl.value < 0) {
-    addMoneyEl.value = "";
-    return;
-  }
-  accMoney += parseInt(addMoneyEl.value);
-  addMoneyEl.value = "";
-  moneyLeftEl.innerText = `$${accMoney} left in your account!`;
 }
 
 function handleSpin() {
@@ -97,10 +84,18 @@ function handleSpin() {
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
   randomPattern();
   setHighScore();
+  playSound("spin");
 
   flashRandomSymbols(function () {
     render();
   });
+}
+
+function setHighScore() {
+  let moneyWon = winMoney(countIdenticalReelImgs());
+
+  highScore = moneyWon > highScore ? moneyWon : highScore;
+  document.getElementById("high-score").innerText = `HIGH SCORE: $${highScore}`;
 }
 
 function flashRandomSymbols(cb) {
@@ -132,6 +127,29 @@ function randomPattern() {
 
     reels[i] = PROBABILITY_LOOKUP[randIdx];
   }
+}
+
+function handleBetPerSpin(evt) {
+  betPerSpin = parseInt(
+    evt.target.innerText.replace(evt.target.innerText[0], "")
+  );
+}
+
+function handleWithdraw() {
+  moneyLeftEl.innerText = `Withdrawing $${accMoney}`;
+  accMoney = 0;
+}
+
+function handleAddMoney() {
+  if (addMoneyEl.value === "") return;
+
+  if (addMoneyEl.value < 0) {
+    addMoneyEl.value = "";
+    return;
+  }
+  accMoney += parseInt(addMoneyEl.value);
+  addMoneyEl.value = "";
+  moneyLeftEl.innerText = `$${accMoney} left in your account!`;
 }
 
 function countIdenticalReelImgs() {
@@ -194,19 +212,12 @@ function renderAccount() {
     console.log("Not enough money to spin!");
     return;
   }
-  console.log(winMoney(countIdenticalReelImgs()));
+
   let moneyWon = winMoney(countIdenticalReelImgs());
 
   wonMoneyEl.innerText = `won $${moneyWon}`;
   accMoney += moneyWon;
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
-}
-
-function setHighScore() {
-  let moneyWon = winMoney(countIdenticalReelImgs());
-
-  highScore = moneyWon > highScore ? moneyWon : highScore;
-  document.getElementById("high-score").innerText = `HIGH SCORE: $${highScore}`;
 }
 
 //render -> visualize
