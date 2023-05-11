@@ -55,6 +55,8 @@ const betPerSpinEl = document.querySelector("#bet-money div:first-child");
 const addMoneyEl = document.getElementById("add-money");
 const moneyLeftEl = document.getElementById("money-left");
 const wonMoneyEl = document.getElementById("won-money");
+const soundBtn = document.querySelector("#main-screen > button");
+const soundEls = document.querySelectorAll("audio");
 const betMoneyEls = [
   ...document.querySelectorAll("#bet-money div:first-child > button"),
 ];
@@ -64,16 +66,14 @@ spinBtn.addEventListener("click", handleSpin);
 addMoneyBtn.addEventListener("click", handleAddMoney);
 withdrawBtn.addEventListener("click", handleWithdraw);
 betPerSpinEl.addEventListener("click", handleBetPerSpin);
+soundBtn.addEventListener("click", handleSound);
 
 /*----- functions -----*/
 init();
 
-function playSound(name, time) {
-  player.src = SOUNDS_LOOKUP[name];
-  player.play();
-  setTimeout(() => {
-    player.pause();
-  }, time);
+function playSound(query) {
+  const sound = document.querySelector(query);
+  sound.play();
 }
 
 function init() {
@@ -93,7 +93,7 @@ function handleSpin() {
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
   randomPattern();
   setHighScore();
-  playSound("spin", 2000);
+  playSound("#spin-btn > audio");
 
   flashRandomSymbols(function () {
     render();
@@ -139,6 +139,7 @@ function randomPattern() {
 }
 
 function handleBetPerSpin(evt) {
+  if (evt.target.tagName !== "BUTTON") return;
   betMoneyEls.forEach(function (betMoneyBtn) {
     if (betMoneyBtn.classList.contains("active"))
       betMoneyBtn.classList.remove("active");
@@ -152,7 +153,7 @@ function handleBetPerSpin(evt) {
 
 function handleWithdraw() {
   if (accMoney === 0) return;
-  playSound("withdraw", 1500);
+  playSound("#withdraw-btn > audio");
   moneyLeftEl.innerText = `Withdrawing $${accMoney}`;
   accMoney = 0;
 }
@@ -165,7 +166,7 @@ function handleAddMoney() {
     return;
   }
 
-  playSound("money", 1900);
+  playSound("#add-money-btn > audio");
   accMoney += parseInt(addMoneyEl.value);
   addMoneyEl.value = "";
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
@@ -244,6 +245,18 @@ function renderAccount() {
 function renderReels() {
   reelEls.forEach(function (el, idx) {
     el.innerHTML = `<img src="${REELIMGS_LOOKUP[reels[idx]].img}" >`;
+  });
+}
+
+function handleSound() {
+  const soundImg = document.getElementById("on-off");
+  if (soundImg.src.includes("img/volume-mute.png")) {
+    soundImg.src = "img/speaker-filled-audio-tool.png";
+  } else {
+    soundImg.src = "img/volume-mute.png";
+  }
+  soundEls.forEach(function (el) {
+    el.muted = !el.muted;
   });
 }
 

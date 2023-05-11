@@ -34,6 +34,9 @@
           <div class="reel"></div>
           <div class="reel"></div>
         </div>
+        <button>
+          <img id="on-off" src="img/speaker-filled-audio-tool.png" />
+        </button>
       </section>
 
       <section id="status-bar">
@@ -50,15 +53,24 @@
             <button class="bet-per-spin buttons">$100</button>
           </div>
           <div>
-            <input id="add-money" type="text" />
+            <input id="add-money" type="number" />
             <button id="add-money-btn">
               <img class="buttons" src="img/pay.png" alt="" />
+              <audio src="sound/cha-ching-7053.mp3"></audio>
             </button>
           </div>
         </div>
         <div>
-          <button id="spin-btn" class="buttons">SPIN</button>
-          <button id="withdraw-btn" class="buttons">WITHDRAW</button>
+          <button id="spin-btn" class="buttons">
+            SPIN<audio
+              src="sound/mixkit-arcade-slot-machine-wheel-1933.wav"
+            ></audio>
+          </button>
+          <button id="withdraw-btn" class="buttons">
+            WITHDRAW<audio
+              src="sound/essential-effects-fx-money-counter.wav"
+            ></audio>
+          </button>
         </div>
       </section>
     </main>

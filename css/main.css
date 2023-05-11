@@ -31,13 +31,26 @@ main {
   align-items: center;
 }
 
+#main-screen > button {
+  background-color: gold;
+  border: none;
+}
+
+#main-screen > button:hover {
+  cursor: pointer;
+}
+
+#on-off {
+  margin-top: 3vmin;
+  height: 3vmin;
+}
+
 #high-score {
-  border-radius: 10px;
   padding: 2vmin;
 }
+
 #reels {
   width: 100%;
-  width: 60vmin;
   margin-top: 5vmin;
   display: flex;
   justify-content: space-evenly;
@@ -64,7 +77,7 @@ main {
   padding: 2vmin;
   margin-top: 2vmin;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -83,7 +96,7 @@ main {
   padding: 2vmin;
   display: flex;
   width: 100%;
-  border-radius: 15px;
+  border-radius: 30px;
   margin-bottom: 2vmin;
 }
 
@@ -105,6 +118,7 @@ main {
   margin-right: 1vmin;
   height: 3vmin;
   background-color: black;
+  opacity: 80%;
   color: gold;
   border: none;
 }
@@ -137,4 +151,16 @@ main {
 .active {
   background-color: black;
   color: gold;
+}
+
+@media (max-width: 375px) {
+  #main-screen {
+    background-color: gold;
+    width: 80vmin;
+    height: 50vh;
+    border-radius: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
