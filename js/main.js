@@ -30,7 +30,7 @@ const REELIMGS_LOOKUP = {
   c: { img: "img/cherry.png", payoutFactor: 1.5 },
   d: { img: "img/diamond.png", payoutFactor: 5 },
   g: { img: "img/grape.png", payoutFactor: 1 },
-  w: { img: "img/watermelon.png", payoutFactor: 0.5 },
+  w: { img: "img/watermelon.png", payoutFactor: 0.8 },
 };
 
 const SOUNDS_LOOKUP = {
@@ -44,6 +44,7 @@ let accMoney;
 let betPerSpin;
 let highScore;
 let reels;
+let moneyWon;
 
 /*----- cached elements  -----*/
 const player = new Audio();
@@ -57,6 +58,7 @@ const moneyLeftEl = document.getElementById("money-left");
 const wonMoneyEl = document.getElementById("won-money");
 const soundBtn = document.querySelector("#main-screen > button");
 const soundEls = document.querySelectorAll("audio");
+const highScoreEl = document.getElementById("high-score");
 const betMoneyEls = [
   ...document.querySelectorAll("#bet-money div:first-child > button"),
 ];
@@ -70,6 +72,7 @@ soundBtn.addEventListener("click", handleSound);
 
 /*----- functions -----*/
 init();
+console.log(reels);
 
 function playSound(query) {
   const sound = document.querySelector(query);
@@ -90,21 +93,15 @@ function handleSpin() {
   if (accMoney < betPerSpin || accMoney === 0) return;
 
   accMoney -= betPerSpin;
-  moneyLeftEl.innerText = `$${accMoney} left in your account!`;
+
   randomPattern();
-  setHighScore();
+  moneyWon = winMoney();
+  highScore = moneyWon > highScore ? moneyWon : highScore;
   playSound("#spin-btn > audio");
 
   flashRandomSymbols(function () {
     render();
   });
-}
-
-function setHighScore() {
-  let moneyWon = winMoney(countIdenticalReelImgs());
-
-  highScore = moneyWon > highScore ? moneyWon : highScore;
-  document.getElementById("high-score").innerText = `HIGH SCORE: $${highScore}`;
 }
 
 function flashRandomSymbols(cb) {
@@ -174,58 +171,28 @@ function handleAddMoney() {
 
 function countIdenticalReelImgs() {
   if (reels[0] === reels[1] && reels[1] === reels[2]) {
-    return { 3: reels[0] };
+    return [3, reels[0]];
   } else if (reels[0] === reels[1]) {
-    return { 2: reels[0] };
+    return [2, reels[0]];
   } else if (reels[0] === reels[2]) {
-    return { 2: reels[0] };
+    return [2, reels[0]];
   } else if (reels[1] === reels[2]) {
-    return { 2: reels[1] };
+    return [2, reels[1]];
   } else {
-    return { 1: reels[0] };
+    return [1, reels[0]];
   }
 }
 
-function winMoney(res) {
-  let countOfIdenticalImgs = parseInt(Object.keys(res)[0]);
-  let img = res[countOfIdenticalImgs];
-  if (countOfIdenticalImgs === 1) {
-    return 0;
-  } else if (countOfIdenticalImgs === 2) {
-    switch (true) {
-      case img === "s":
-        return Math.floor(betPerSpin * REELIMGS_LOOKUP["s"].payoutFactor);
+function winMoney() {
+  let [numIdenticalSymbols, symbol] = countIdenticalReelImgs();
+  console.log(numIdenticalSymbols);
+  if (numIdenticalSymbols <= 1) return 0;
 
-      case img === "c":
-        return Math.floor(betPerSpin * REELIMGS_LOOKUP["c"].payoutFactor);
+  let prizeMultiplyer = numIdenticalSymbols === 2 ? 1 : 5;
 
-      case img === "g":
-        return Math.floor(betPerSpin * REELIMGS_LOOKUP["g"].payoutFactor);
-
-      case img === "d":
-        return Math.floor(betPerSpin * REELIMGS_LOOKUP["d"].payoutFactor);
-
-      case img === "w":
-        return Math.floor(betPerSpin * REELIMGS_LOOKUP["w"].payoutFactor);
-    }
-  } else {
-    switch (true) {
-      case img === "s":
-        return Math.floor(betPerSpin * 5 * REELIMGS_LOOKUP["s"].payoutFactor);
-
-      case img === "c":
-        return Math.floor(betPerSpin * 5 * REELIMGS_LOOKUP["c"].payoutFactor);
-
-      case img === "g":
-        return Math.floor(betPerSpin * 5 * REELIMGS_LOOKUP["g"].payoutFactor);
-
-      case img === "d":
-        return Math.floor(betPerSpin * 5 * REELIMGS_LOOKUP["d"].payoutFactor);
-
-      case img === "w":
-        return Math.floor(betPerSpin * 5 * REELIMGS_LOOKUP["w"].payoutFactor);
-    }
-  }
+  return Math.floor(
+    betPerSpin * prizeMultiplyer * REELIMGS_LOOKUP[symbol].payoutFactor
+  );
 }
 
 function renderAccount() {
@@ -234,11 +201,10 @@ function renderAccount() {
     return;
   }
 
-  let moneyWon = winMoney(countIdenticalReelImgs());
-
   wonMoneyEl.innerText = `won $${moneyWon}`;
   accMoney += moneyWon;
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
+  highScoreEl.innerText = `HIGH SCORE: $${highScore}`;
 }
 
 //render -> visualize
@@ -250,11 +216,9 @@ function renderReels() {
 
 function handleSound() {
   const soundImg = document.getElementById("on-off");
-  if (soundImg.src.includes("img/sound.png")) {
-    soundImg.src = "img/speaker-filled-audio-tool.png";
-  } else {
-    soundImg.src = "img/sound.png";
-  }
+  soundImg.src = soundImg.src.includes("img/sound.png")
+    ? "img/speaker-filled-audio-tool.png"
+    : "img/sound.png";
   soundEls.forEach(function (el) {
     el.muted = !el.muted;
   });
