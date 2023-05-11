@@ -6,7 +6,7 @@ A description of your game. Background info of the game is a nice touch.
 
 <div id="header" align="center">
 
-  <img src="img/header.png" width="800" height="400">
+  <img src="img/header.jpg" width="800" height="400">
 
 </div>
 
@@ -40,7 +40,7 @@ levels of learning and success.
 
 /> |
 
-    ## :computer: Technologies Used
+## :computer: Technologies Used
 
 A screenshot of your app's landing page and any other screenshots of interest.
 
@@ -74,3 +74,13 @@ A screenshot of your app's landing page and any other screenshots of interest.
     > https://kkyeongrokk.github.io/slot-machine/ </a
   >
 </details>
+
+# : Next Steps
+
+## :satellite: Upcoming Features
+
+- [:star:] Animations on sliding buttons
+
+- [:x:] Comment functionality on posts to encourage discussion
+
+- [:x:] ~~Tinder API Integration~~
