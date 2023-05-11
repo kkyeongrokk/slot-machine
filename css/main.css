@@ -25,21 +25,33 @@ main {
   background-color: gold;
   width: 100%;
   height: 50vmin;
-  /* border: 0.5vmin solid black; */
   border-radius: 10%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+#main-screen > button {
+  background-color: gold;
+  border: none;
+  padding: 0;
+}
+
+#main-screen > button:hover {
+  cursor: pointer;
+}
+
+#on-off {
+  margin-top: 3vmin;
+  height: 3vmin;
+}
+
 #high-score {
-  /* border: 0.5vmin solid black; */
-  border-radius: 10px;
   padding: 2vmin;
 }
+
 #reels {
   width: 100%;
-  width: 60vmin;
   margin-top: 5vmin;
   display: flex;
   justify-content: space-evenly;
@@ -66,8 +78,7 @@ main {
   padding: 2vmin;
   margin-top: 2vmin;
   width: 100%;
-  /* border: 0.5vmin solid black; */
-  border-radius: 10px;
+  border-radius: 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -86,8 +97,7 @@ main {
   padding: 2vmin;
   display: flex;
   width: 100%;
-  /* border: 0.5vmin solid black; */
-  border-radius: 15px;
+  border-radius: 30px;
   margin-bottom: 2vmin;
 }
 
@@ -97,21 +107,22 @@ main {
   align-items: center;
 }
 
-#bet-money div:first-child button {
-  border: 0.5vmin solid grey;
-}
-
 #bet-money div:last-child {
   width: 50%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin-right: 2vmin;
 }
 
-#add-money {
+#bet-money div:last-child #add-money {
   width: 7vmin;
   margin-right: 1vmin;
   height: 3vmin;
+  background-color: black;
+  opacity: 80%;
+  color: gold;
+  border: none;
 }
 
 #add-money-btn {
@@ -121,26 +132,44 @@ main {
   background-color: gold;
 }
 
-#add-money-btn > img {
-  width: 5vmin;
-  height: 5vmin;
-}
-
 .buttons {
-  /* border: 0.5vmin solid black; */
   border-radius: 10px;
-  /* margin-top: 2vmin; */
-  /* height: 8vmin; */
   width: fit-content;
+  border: 0.3vmin solid grey;
 }
 
 .buttons:hover {
   background-color: gold;
-  color: darkgrey;
+  color: black;
   cursor: pointer;
+}
+
+#add-money-btn > img {
+  width: 5vmin;
+  height: 5vmin;
+  border: none;
 }
 
 .active {
   background-color: black;
   color: gold;
+}
+
+@media (max-width: 375px) {
+  #main-screen {
+    width: 80vmin;
+    height: 50vh;
+  }
+  #status-bar {
+    margin-top: 2vmin;
+    width: 80vmin;
+    border-radius: 30px;
+    font-size: 3vmin;
+  }
+  #bet-money {
+    width: 80vmin;
+  }
+  .buttons {
+    font-size: 3vmin;
+  }
 }

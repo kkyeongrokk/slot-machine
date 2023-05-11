@@ -4,29 +4,33 @@ const PROBABILITY_LOOKUP = [
   "c",
   "c",
   "c",
+  "c",
+  "g",
+  "g",
   "g",
   "g",
   "g",
   "g",
   "d",
   "d",
-  "d",
   "w",
   "w",
   "w",
   "w",
-  "s",
+  "w",
+  "w",
+  "w",
   "s",
 ];
 // 'c' -> cherry, 'g' -> grape, 'd' -> diamond, etc.
 // In the above example, a cherry should come up 4 times as often as a diamond...
 
 const REELIMGS_LOOKUP = {
-  s: { img: "img/777.png", payoutFactor: 50 },
-  c: { img: "img/cherry.png", payoutFactor: 5 },
-  d: { img: "img/diamond.png", payoutFactor: 40 },
-  g: { img: "img/grape.png", payoutFactor: 10 },
-  w: { img: "img/watermelon.png", payoutFactor: 15 },
+  s: { img: "img/777.png", payoutFactor: 10 },
+  c: { img: "img/cherry.png", payoutFactor: 1.5 },
+  d: { img: "img/diamond.png", payoutFactor: 5 },
+  g: { img: "img/grape.png", payoutFactor: 1 },
+  w: { img: "img/watermelon.png", payoutFactor: 0.5 },
 };
 
 const SOUNDS_LOOKUP = {
@@ -51,6 +55,8 @@ const betPerSpinEl = document.querySelector("#bet-money div:first-child");
 const addMoneyEl = document.getElementById("add-money");
 const moneyLeftEl = document.getElementById("money-left");
 const wonMoneyEl = document.getElementById("won-money");
+const soundBtn = document.querySelector("#main-screen > button");
+const soundEls = document.querySelectorAll("audio");
 const betMoneyEls = [
   ...document.querySelectorAll("#bet-money div:first-child > button"),
 ];
@@ -60,16 +66,14 @@ spinBtn.addEventListener("click", handleSpin);
 addMoneyBtn.addEventListener("click", handleAddMoney);
 withdrawBtn.addEventListener("click", handleWithdraw);
 betPerSpinEl.addEventListener("click", handleBetPerSpin);
+soundBtn.addEventListener("click", handleSound);
 
 /*----- functions -----*/
 init();
 
-function playSound(name, time) {
-  player.src = SOUNDS_LOOKUP[name];
-  player.play();
-  setTimeout(() => {
-    player.pause();
-  }, time);
+function playSound(query) {
+  const sound = document.querySelector(query);
+  sound.play();
 }
 
 function init() {
@@ -89,7 +93,7 @@ function handleSpin() {
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
   randomPattern();
   setHighScore();
-  playSound("spin", 2000);
+  playSound("#spin-btn > audio");
 
   flashRandomSymbols(function () {
     render();
@@ -135,6 +139,7 @@ function randomPattern() {
 }
 
 function handleBetPerSpin(evt) {
+  if (evt.target.tagName !== "BUTTON") return;
   betMoneyEls.forEach(function (betMoneyBtn) {
     if (betMoneyBtn.classList.contains("active"))
       betMoneyBtn.classList.remove("active");
@@ -147,7 +152,8 @@ function handleBetPerSpin(evt) {
 }
 
 function handleWithdraw() {
-  playSound("withdraw", 1500);
+  if (accMoney === 0) return;
+  playSound("#withdraw-btn > audio");
   moneyLeftEl.innerText = `Withdrawing $${accMoney}`;
   accMoney = 0;
 }
@@ -160,7 +166,7 @@ function handleAddMoney() {
     return;
   }
 
-  playSound("money", 1900);
+  playSound("#add-money-btn > audio");
   accMoney += parseInt(addMoneyEl.value);
   addMoneyEl.value = "";
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
@@ -183,41 +189,42 @@ function countIdenticalReelImgs() {
 function winMoney(res) {
   let countOfIdenticalImgs = parseInt(Object.keys(res)[0]);
   let img = res[countOfIdenticalImgs];
-  if (countOfIdenticalImgs === 1) return 0;
+  if (countOfIdenticalImgs === 1) {
+    return 0;
+  } else if (countOfIdenticalImgs === 2) {
+    switch (true) {
+      case img === "s":
+        return Math.floor(betPerSpin * REELIMGS_LOOKUP["s"].payoutFactor);
 
-  switch (true) {
-    case img === "s":
-      return Math.floor(
-        countOfIdenticalImgs * betPerSpin * REELIMGS_LOOKUP["s"].payoutFactor
-      );
+      case img === "c":
+        return Math.floor(betPerSpin * REELIMGS_LOOKUP["c"].payoutFactor);
 
-    case img === "c":
-      return Math.floor(
-        countOfIdenticalImgs *
-          (betPerSpin / 10) *
-          REELIMGS_LOOKUP["c"].payoutFactor
-      );
+      case img === "g":
+        return Math.floor(betPerSpin * REELIMGS_LOOKUP["g"].payoutFactor);
 
-    case img === "g":
-      return Math.floor(
-        countOfIdenticalImgs *
-          (betPerSpin / 2) *
-          REELIMGS_LOOKUP["g"].payoutFactor
-      );
+      case img === "d":
+        return Math.floor(betPerSpin * REELIMGS_LOOKUP["d"].payoutFactor);
 
-    case img === "d":
-      return Math.floor(
-        countOfIdenticalImgs *
-          (betPerSpin / 15) *
-          REELIMGS_LOOKUP["d"].payoutFactor
-      );
+      case img === "w":
+        return Math.floor(betPerSpin * REELIMGS_LOOKUP["w"].payoutFactor);
+    }
+  } else {
+    switch (true) {
+      case img === "s":
+        return Math.floor(betPerSpin * 5 * REELIMGS_LOOKUP["s"].payoutFactor);
 
-    case img === "w":
-      return Math.floor(
-        countOfIdenticalImgs *
-          (betPerSpin / 12) *
-          REELIMGS_LOOKUP["w"].payoutFactor
-      );
+      case img === "c":
+        return Math.floor(betPerSpin * 5 * REELIMGS_LOOKUP["c"].payoutFactor);
+
+      case img === "g":
+        return Math.floor(betPerSpin * 5 * REELIMGS_LOOKUP["g"].payoutFactor);
+
+      case img === "d":
+        return Math.floor(betPerSpin * 5 * REELIMGS_LOOKUP["d"].payoutFactor);
+
+      case img === "w":
+        return Math.floor(betPerSpin * 5 * REELIMGS_LOOKUP["w"].payoutFactor);
+    }
   }
 }
 
@@ -238,6 +245,18 @@ function renderAccount() {
 function renderReels() {
   reelEls.forEach(function (el, idx) {
     el.innerHTML = `<img src="${REELIMGS_LOOKUP[reels[idx]].img}" >`;
+  });
+}
+
+function handleSound() {
+  const soundImg = document.getElementById("on-off");
+  if (soundImg.src.includes("img/sound.png")) {
+    soundImg.src = "img/speaker-filled-audio-tool.png";
+  } else {
+    soundImg.src = "img/sound.png";
+  }
+  soundEls.forEach(function (el) {
+    el.muted = !el.muted;
   });
 }
 
