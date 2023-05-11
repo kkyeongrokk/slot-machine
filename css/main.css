@@ -97,6 +97,10 @@ main {
   align-items: center;
 }
 
+#bet-money div:first-child button {
+  border: 0.5vmin solid grey;
+}
+
 #bet-money div:last-child {
   width: 50%;
   display: flex;
@@ -134,4 +138,9 @@ main {
   background-color: gold;
   color: darkgrey;
   cursor: pointer;
+}
+
+.active {
+  background-color: black;
+  color: gold;
 }
