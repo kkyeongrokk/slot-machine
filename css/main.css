@@ -158,7 +158,7 @@ main {
 @media (max-width: 375px) {
   #main-screen {
     width: 80vmin;
-    height: 50vh;
+    height: 60vh;
   }
   #status-bar {
     margin-top: 2vmin;
