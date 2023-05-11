@@ -25,7 +25,6 @@ main {
   background-color: gold;
   width: 100%;
   height: 50vmin;
-  /* border: 0.5vmin solid black; */
   border-radius: 10%;
   display: flex;
   flex-direction: column;
@@ -33,7 +32,6 @@ main {
 }
 
 #high-score {
-  /* border: 0.5vmin solid black; */
   border-radius: 10px;
   padding: 2vmin;
 }
@@ -66,7 +64,6 @@ main {
   padding: 2vmin;
   margin-top: 2vmin;
   width: 100%;
-  /* border: 0.5vmin solid black; */
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
@@ -86,7 +83,6 @@ main {
   padding: 2vmin;
   display: flex;
   width: 100%;
-  /* border: 0.5vmin solid black; */
   border-radius: 15px;
   margin-bottom: 2vmin;
 }
@@ -97,10 +93,6 @@ main {
   align-items: center;
 }
 
-#bet-money div:first-child button {
-  border: 0.5vmin solid grey;
-}
-
 #bet-money div:last-child {
   width: 50%;
   display: flex;
@@ -108,10 +100,13 @@ main {
   align-items: center;
 }
 
-#add-money {
+#bet-money div:last-child #add-money {
   width: 7vmin;
   margin-right: 1vmin;
   height: 3vmin;
+  background-color: black;
+  color: gold;
+  border: none;
 }
 
 #add-money-btn {
@@ -121,23 +116,22 @@ main {
   background-color: gold;
 }
 
-#add-money-btn > img {
-  width: 5vmin;
-  height: 5vmin;
-}
-
 .buttons {
-  /* border: 0.5vmin solid black; */
   border-radius: 10px;
-  /* margin-top: 2vmin; */
-  /* height: 8vmin; */
   width: fit-content;
+  border: 0.3vmin solid grey;
 }
 
 .buttons:hover {
   background-color: gold;
-  color: darkgrey;
+  color: black;
   cursor: pointer;
+}
+
+#add-money-btn > img {
+  width: 5vmin;
+  height: 5vmin;
+  border: none;
 }
 
 .active {

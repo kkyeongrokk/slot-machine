@@ -4,29 +4,33 @@ const PROBABILITY_LOOKUP = [
   "c",
   "c",
   "c",
+  "c",
+  "g",
+  "g",
   "g",
   "g",
   "g",
   "g",
   "d",
   "d",
-  "d",
   "w",
   "w",
   "w",
   "w",
-  "s",
+  "w",
+  "w",
+  "w",
   "s",
 ];
 // 'c' -> cherry, 'g' -> grape, 'd' -> diamond, etc.
 // In the above example, a cherry should come up 4 times as often as a diamond...
 
 const REELIMGS_LOOKUP = {
-  s: { img: "img/777.png", payoutFactor: 50 },
-  c: { img: "img/cherry.png", payoutFactor: 5 },
-  d: { img: "img/diamond.png", payoutFactor: 40 },
-  g: { img: "img/grape.png", payoutFactor: 10 },
-  w: { img: "img/watermelon.png", payoutFactor: 15 },
+  s: { img: "img/777.png", payoutFactor: 10 },
+  c: { img: "img/cherry.png", payoutFactor: 1.5 },
+  d: { img: "img/diamond.png", payoutFactor: 5 },
+  g: { img: "img/grape.png", payoutFactor: 1 },
+  w: { img: "img/watermelon.png", payoutFactor: 0.5 },
 };
 
 const SOUNDS_LOOKUP = {
@@ -147,6 +151,7 @@ function handleBetPerSpin(evt) {
 }
 
 function handleWithdraw() {
+  if (accMoney === 0) return;
   playSound("withdraw", 1500);
   moneyLeftEl.innerText = `Withdrawing $${accMoney}`;
   accMoney = 0;
@@ -183,41 +188,42 @@ function countIdenticalReelImgs() {
 function winMoney(res) {
   let countOfIdenticalImgs = parseInt(Object.keys(res)[0]);
   let img = res[countOfIdenticalImgs];
-  if (countOfIdenticalImgs === 1) return 0;
+  if (countOfIdenticalImgs === 1) {
+    return 0;
+  } else if (countOfIdenticalImgs === 2) {
+    switch (true) {
+      case img === "s":
+        return Math.floor(betPerSpin * REELIMGS_LOOKUP["s"].payoutFactor);
 
-  switch (true) {
-    case img === "s":
-      return Math.floor(
-        countOfIdenticalImgs * betPerSpin * REELIMGS_LOOKUP["s"].payoutFactor
-      );
+      case img === "c":
+        return Math.floor(betPerSpin * REELIMGS_LOOKUP["c"].payoutFactor);
 
-    case img === "c":
-      return Math.floor(
-        countOfIdenticalImgs *
-          (betPerSpin / 10) *
-          REELIMGS_LOOKUP["c"].payoutFactor
-      );
+      case img === "g":
+        return Math.floor(betPerSpin * REELIMGS_LOOKUP["g"].payoutFactor);
 
-    case img === "g":
-      return Math.floor(
-        countOfIdenticalImgs *
-          (betPerSpin / 2) *
-          REELIMGS_LOOKUP["g"].payoutFactor
-      );
+      case img === "d":
+        return Math.floor(betPerSpin * REELIMGS_LOOKUP["d"].payoutFactor);
 
-    case img === "d":
-      return Math.floor(
-        countOfIdenticalImgs *
-          (betPerSpin / 15) *
-          REELIMGS_LOOKUP["d"].payoutFactor
-      );
+      case img === "w":
+        return Math.floor(betPerSpin * REELIMGS_LOOKUP["w"].payoutFactor);
+    }
+  } else {
+    switch (true) {
+      case img === "s":
+        return Math.floor(betPerSpin * 5 * REELIMGS_LOOKUP["s"].payoutFactor);
 
-    case img === "w":
-      return Math.floor(
-        countOfIdenticalImgs *
-          (betPerSpin / 12) *
-          REELIMGS_LOOKUP["w"].payoutFactor
-      );
+      case img === "c":
+        return Math.floor(betPerSpin * 5 * REELIMGS_LOOKUP["c"].payoutFactor);
+
+      case img === "g":
+        return Math.floor(betPerSpin * 5 * REELIMGS_LOOKUP["g"].payoutFactor);
+
+      case img === "d":
+        return Math.floor(betPerSpin * 5 * REELIMGS_LOOKUP["d"].payoutFactor);
+
+      case img === "w":
+        return Math.floor(betPerSpin * 5 * REELIMGS_LOOKUP["w"].payoutFactor);
+    }
   }
 }
 
