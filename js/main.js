@@ -31,6 +31,8 @@ const REELIMGS_LOOKUP = {
 
 const SOUNDS_LOOKUP = {
   spin: "sound/mixkit-arcade-slot-machine-wheel-1933.wav",
+  money: "sound/cha-ching-7053.mp3",
+  withdraw: "sound/essential-effects-fx-money-counter.wav",
 };
 
 /*----- state variables -----*/
@@ -62,9 +64,12 @@ betPerSpinEl.addEventListener("click", handleBetPerSpin);
 /*----- functions -----*/
 init();
 
-function playSound(name) {
+function playSound(name, time) {
   player.src = SOUNDS_LOOKUP[name];
   player.play();
+  setTimeout(() => {
+    player.pause();
+  }, time);
 }
 
 function init() {
@@ -84,7 +89,7 @@ function handleSpin() {
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
   randomPattern();
   setHighScore();
-  playSound("spin");
+  playSound("spin", 2000);
 
   flashRandomSymbols(function () {
     render();
@@ -130,12 +135,19 @@ function randomPattern() {
 }
 
 function handleBetPerSpin(evt) {
+  betMoneyEls.forEach(function (betMoneyBtn) {
+    if (betMoneyBtn.classList.contains("active"))
+      betMoneyBtn.classList.remove("active");
+  });
+  evt.target.classList.add("active");
+
   betPerSpin = parseInt(
     evt.target.innerText.replace(evt.target.innerText[0], "")
   );
 }
 
 function handleWithdraw() {
+  playSound("withdraw", 1500);
   moneyLeftEl.innerText = `Withdrawing $${accMoney}`;
   accMoney = 0;
 }
@@ -147,6 +159,8 @@ function handleAddMoney() {
     addMoneyEl.value = "";
     return;
   }
+
+  playSound("money", 1900);
   accMoney += parseInt(addMoneyEl.value);
   addMoneyEl.value = "";
   moneyLeftEl.innerText = `$${accMoney} left in your account!`;
