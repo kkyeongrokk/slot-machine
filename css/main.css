@@ -34,6 +34,7 @@ main {
 #main-screen > button {
   background-color: gold;
   border: none;
+  padding: 0;
 }
 
 #main-screen > button:hover {
@@ -111,6 +112,7 @@ main {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin-right: 2vmin;
 }
 
 #bet-money div:last-child #add-money {
@@ -155,12 +157,19 @@ main {
 
 @media (max-width: 375px) {
   #main-screen {
-    background-color: gold;
     width: 80vmin;
     height: 50vh;
-    border-radius: 10%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  }
+  #status-bar {
+    margin-top: 2vmin;
+    width: 80vmin;
+    border-radius: 30px;
+    font-size: 3vmin;
+  }
+  #bet-money {
+    width: 80vmin;
+  }
+  .buttons {
+    font-size: 3vmin;
   }
 }

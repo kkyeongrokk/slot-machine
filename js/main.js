@@ -250,10 +250,10 @@ function renderReels() {
 
 function handleSound() {
   const soundImg = document.getElementById("on-off");
-  if (soundImg.src.includes("img/volume-mute.png")) {
+  if (soundImg.src.includes("img/sound.png")) {
     soundImg.src = "img/speaker-filled-audio-tool.png";
   } else {
-    soundImg.src = "img/volume-mute.png";
+    soundImg.src = "img/sound.png";
   }
   soundEls.forEach(function (el) {
     el.muted = !el.muted;
