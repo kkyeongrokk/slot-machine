@@ -61,7 +61,7 @@ This is an implementation of slot-machine. You can experience playing slot machi
   >
 </details>
 
-# : Next Steps
+# :next_track_button: Next Steps
 
 ## :satellite: Upcoming Features
 
