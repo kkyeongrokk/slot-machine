@@ -30,7 +30,7 @@ const REELIMGS_LOOKUP = {
   c: { img: "img/cherry.png", payoutFactor: 1.5 },
   d: { img: "img/diamond.png", payoutFactor: 5 },
   g: { img: "img/grape.png", payoutFactor: 1 },
-  w: { img: "img/watermelon.png", payoutFactor: 0.5 },
+  w: { img: "img/watermelon.png", payoutFactor: 0.8 },
 };
 
 const SOUNDS_LOOKUP = {
@@ -250,11 +250,9 @@ function renderReels() {
 
 function handleSound() {
   const soundImg = document.getElementById("on-off");
-  if (soundImg.src.includes("img/sound.png")) {
-    soundImg.src = "img/speaker-filled-audio-tool.png";
-  } else {
-    soundImg.src = "img/sound.png";
-  }
+  soundImg.src = soundImg.src.includes("img/sound.png")
+    ? "img/speaker-filled-audio-tool.png"
+    : "img/sound.png";
   soundEls.forEach(function (el) {
     el.muted = !el.muted;
   });
