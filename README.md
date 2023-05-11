@@ -24,8 +24,7 @@ This is an implementation of slot-machine. You can experience playing slot machi
 
 |     Description     | Screenshot |
 | :-----------------: | ---------- |
-| <h3>Start Page</h3> | <img src="img/slot-machine-screenshot.png"
-    width="700"/> |
+| <h3>Start Page</h3> | <img src="img/slot-machine-screenshot.png" width="700"/> |
 
 ## :computer: Technologies Used
 
@@ -41,6 +40,7 @@ This is an implementation of slot-machine. You can experience playing slot machi
 
 <details open>
   <summary>How to start the game</summary>
+
     1. Type in the amount of money you want to put in your account.
     2. Click on the money icon on the right.
     3. Click the spin button!
@@ -48,6 +48,7 @@ This is an implementation of slot-machine. You can experience playing slot machi
 
 <details>
   <summary>Other options</summary>
+
     1. You can choose your bet money per spin by clicking one of the buttons($15, $25, $50, $100).
     2. You can always withdraw your money by clicking withdraw button.
     3. You can mute the sound by clicking speaker icon in teh middle.
