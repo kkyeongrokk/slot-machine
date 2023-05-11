@@ -46,7 +46,7 @@ This is an implementation of slot-machine. You can experience playing slot machi
     3. Click the spin button!
 </details>
 
-<details>
+<details open>
   <summary>Other options</summary>
 
     1. You can choose your bet money per spin by clicking one of the buttons($15, $25, $50, $100).
