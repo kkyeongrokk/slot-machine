@@ -33,12 +33,6 @@ const REELIMGS_LOOKUP = {
   w: { img: "img/watermelon.png", payoutFactor: 0.8 },
 };
 
-const SOUNDS_LOOKUP = {
-  spin: "sound/mixkit-arcade-slot-machine-wheel-1933.wav",
-  money: "sound/cha-ching-7053.mp3",
-  withdraw: "sound/essential-effects-fx-money-counter.wav",
-};
-
 /*----- state variables -----*/
 let accMoney;
 let betPerSpin;
@@ -47,18 +41,17 @@ let reels;
 let moneyWon;
 
 /*----- cached elements  -----*/
-const player = new Audio();
-const reelEls = document.querySelectorAll(".reel");
-const spinBtn = document.getElementById("spin-btn");
-const addMoneyBtn = document.getElementById("add-money-btn");
-const withdrawBtn = document.getElementById("withdraw-btn");
-const betPerSpinEl = document.querySelector("#bet-money div:first-child");
-const addMoneyEl = document.getElementById("add-money");
-const moneyLeftEl = document.getElementById("money-left");
-const wonMoneyEl = document.getElementById("won-money");
-const soundBtn = document.querySelector("#main-screen > button");
-const soundEls = document.querySelectorAll("audio");
 const highScoreEl = document.getElementById("high-score");
+const reelEls = document.querySelectorAll(".reel");
+const soundBtn = document.getElementById('mute');
+const moneyLeftEl = document.getElementById("status-bar-money-left");
+const wonMoneyEl = document.getElementById("status-bar-won-money");
+const betPerSpinEl = document.querySelector("#bet-money div:first-child");
+const addMoneyBtn = document.getElementById("add-money-btn");
+const addMoneyEl = document.getElementById("add-money");
+const soundEls = document.querySelectorAll("audio");
+const spinBtn = document.getElementById("spin-btn");
+const withdrawBtn = document.getElementById("withdraw-btn");
 const betMoneyEls = [
   ...document.querySelectorAll("#bet-money div:first-child > button"),
 ];
@@ -72,15 +65,10 @@ soundBtn.addEventListener("click", handleSound);
 
 /*----- functions -----*/
 init();
-console.log(reels);
-
-function playSound(query) {
-  const sound = document.querySelector(query);
-  sound.play();
-}
 
 function init() {
-  accMoney = 0;
+  // You can still win money from the last spin by having initialize value of 0.1
+  accMoney = 0.1;
   betPerSpin = 15;
   highScore = 0;
   reels = ["s", "s", "s"];
@@ -88,24 +76,80 @@ function init() {
   render();
 }
 
+/*************************** HANDLERS ***************************/
 function handleSpin() {
   // guard to not spin when the user have not enough money
-  if (accMoney < betPerSpin || accMoney === 0) return;
+  if (accMoney < betPerSpin || accMoney === 0) {
+    moneyLeftEl.innerText = "Insert Money";
+    return;
+  }
 
   accMoney -= betPerSpin;
-
   randomPattern();
   moneyWon = winMoney();
   highScore = moneyWon > highScore ? moneyWon : highScore;
   playSound("#spin-btn > audio");
 
-  flashRandomSymbols(function () {
-    render();
+  flashRandomSymbols(render);
+}
+
+function handleBetPerSpin(evt) {
+  //Guard
+  if (evt.target.tagName !== "BUTTON") return;
+  
+  betMoneyEls.forEach(function (betMoneyBtn) {
+    if (betMoneyBtn.classList.contains("active"))
+      betMoneyBtn.classList.remove("active");
+  });
+  evt.target.classList.add("active");
+
+  betPerSpin = parseInt(
+    evt.target.innerText.replace(evt.target.innerText[0], "")
+  );
+}
+
+function handleWithdraw() {
+  if (accMoney === 0) return;
+
+  playSound("#withdraw-btn > audio");
+  moneyLeftEl.innerText = `Withdrawing $${accMoney}`;
+  accMoney = 0;
+}
+
+function handleAddMoney() {
+  // Guards
+  if (addMoneyEl.value === "") return;
+
+  if (addMoneyEl.value < 0) {
+    addMoneyEl.value = "";
+    return;
+  }
+
+  playSound("#add-money-btn > audio");
+  accMoney += parseInt(addMoneyEl.value);
+  accMoney = Math.floor(accMoney);
+  addMoneyEl.value = "";
+  moneyLeftEl.innerText = `$${accMoney} left in your account!`;
+}
+
+function handleSound() {
+  const soundImg = document.getElementById("on-off");
+  soundImg.src = soundImg.src.includes("img/sound.png")
+    ? "img/speaker-filled-audio-tool.png"
+    : "img/sound.png";
+  soundEls.forEach(function (el) {
+    el.muted = !el.muted;
   });
 }
 
+/*************************** Other Functions ***************************/
+function playSound(query) {
+  const sound = document.querySelector(query);
+  sound.play();
+}
+
 function flashRandomSymbols(cb) {
-  const TICK_RESOLUTION = 50; // adjust to taste
+  const TICK_RESOLUTION = 50;
   const MAX_TICKS = 40;
   let tickCount = 0;
 
@@ -127,6 +171,7 @@ function flashRandomSymbols(cb) {
   }, TICK_RESOLUTION);
 }
 
+// Randomly generate images for reels
 function randomPattern() {
   for (let i = 0; i < 3; i++) {
     let randIdx = Math.floor(Math.random() * PROBABILITY_LOOKUP.length);
@@ -135,40 +180,7 @@ function randomPattern() {
   }
 }
 
-function handleBetPerSpin(evt) {
-  if (evt.target.tagName !== "BUTTON") return;
-  betMoneyEls.forEach(function (betMoneyBtn) {
-    if (betMoneyBtn.classList.contains("active"))
-      betMoneyBtn.classList.remove("active");
-  });
-  evt.target.classList.add("active");
-
-  betPerSpin = parseInt(
-    evt.target.innerText.replace(evt.target.innerText[0], "")
-  );
-}
-
-function handleWithdraw() {
-  if (accMoney === 0) return;
-  playSound("#withdraw-btn > audio");
-  moneyLeftEl.innerText = `Withdrawing $${accMoney}`;
-  accMoney = 0;
-}
-
-function handleAddMoney() {
-  if (addMoneyEl.value === "") return;
-
-  if (addMoneyEl.value < 0) {
-    addMoneyEl.value = "";
-    return;
-  }
-
-  playSound("#add-money-btn > audio");
-  accMoney += parseInt(addMoneyEl.value);
-  addMoneyEl.value = "";
-  moneyLeftEl.innerText = `$${accMoney} left in your account!`;
-}
-
+/*************************** WIN-LOGIC functions ***************************/
 function countIdenticalReelImgs() {
   if (reels[0] === reels[1] && reels[1] === reels[2]) {
     return [3, reels[0]];
@@ -185,7 +197,6 @@ function countIdenticalReelImgs() {
 
 function winMoney() {
   let [numIdenticalSymbols, symbol] = countIdenticalReelImgs();
-  console.log(numIdenticalSymbols);
   if (numIdenticalSymbols <= 1) return 0;
 
   let prizeMultiplyer = numIdenticalSymbols === 2 ? 1 : 5;
@@ -195,9 +206,11 @@ function winMoney() {
   );
 }
 
+/*************************** RENDER functions ***************************/
 function renderAccount() {
-  if (accMoney < betPerSpin) {
-    console.log("Not enough money to spin!");
+  // Guard for initializing
+  if (accMoney === 0.1) {
+    moneyLeftEl.innerText = "Insert Money";
     return;
   }
 
@@ -207,20 +220,9 @@ function renderAccount() {
   highScoreEl.innerText = `HIGH SCORE: $${highScore}`;
 }
 
-//render -> visualize
 function renderReels() {
   reelEls.forEach(function (el, idx) {
     el.innerHTML = `<img src="${REELIMGS_LOOKUP[reels[idx]].img}" >`;
-  });
-}
-
-function handleSound() {
-  const soundImg = document.getElementById("on-off");
-  soundImg.src = soundImg.src.includes("img/sound.png")
-    ? "img/speaker-filled-audio-tool.png"
-    : "img/sound.png";
-  soundEls.forEach(function (el) {
-    el.muted = !el.muted;
   });
 }
 
